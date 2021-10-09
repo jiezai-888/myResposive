@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		//测试用
+		<div class="app">
+		</div>
+		<script>
+			let a=Object.create(Array.prototype);
+			console.log(a);
+			
+			//给a添加属性
+			Object.defineProperty(a,'push',{
+				configurable:true,
+				enumerable:true,
+				value:function(){
+					Array.prototype.push.apply(this,arguments);
+					return a;
+				}
+			});
+			
+			//监听该属性
+			Object.defineProperty(a,'push',{
+				configurable:false,
+				enumerable:true,
+				get(){
+					console.log('你正在访问我的push方法');
+					return function(){
+					Array.prototype.push.apply(this,arguments);
+					return a;
+				};
+				},
+				set(arguments){
+					console.log("你正在修改我的值");
+					a.push(arguments);
+				}
+			})
+			console.log(a.push("666666"),a.push("xiaomi"),a.push("oppo"),a);
+			
+		</script>
+	</body>
+</html>
